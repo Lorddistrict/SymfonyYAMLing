@@ -135,5 +135,8 @@
     },
     "symfony/yaml": {
         "version": "v4.4.7"
+    },
+    "twig/twig": {
+        "version": "v3.0.3"
     }
 }
