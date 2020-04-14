@@ -9,7 +9,22 @@
     {{ include('core/stylesheets.html.twig') }}
 </head>
 <body>
-{% block body %}{% endblock %}
+
+{{ include('core/dashboard.html.twig') }}
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">SymfonyYAMLing</a>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        {{ include('core/navbar.html.twig') }}
+        {% block body %}{% endblock %}
+    </div>
+</div>
+
+{{ include('core/javascripts.html.twig') }}
+
 </body>
 
 </html>

@@ -3,11 +3,37 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-
-    {% for organization in organizations %}
-        {{ organization.name }}<br/>
-        {{ organization.description }}
-        <hr>
-    {% endfor %}
-
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+            <h1 class="h2">Organizations</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="#" class="btn btn-sm btn-outline-success">
+                    <span data-feather="plus-circle"></span>
+                    Add
+                </a>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for organization in organizations %}
+                    <tr>
+                        <td>{{ organization.name }}</td>
+                        <td>{{ organization.description | slice(0, 200) }}</td>
+                        <td>
+                            <a href="">
+                                <span data-feather="trash-2"></span>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
 {% endblock %}

@@ -9,8 +9,11 @@ class OrganizationManager
 {
     /**
      * Get properties of an Organization
+     *
+     * @param array $organization
+     * @return Organization
      */
-    public function getProperties(array $organization)
+    public function getProperties(array $organization): Organization
     {
         return new Organization($organization['name'], $organization['description']);
     }

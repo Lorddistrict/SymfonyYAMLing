@@ -4,26 +4,26 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Manager\OrganizationManager;
+use App\Manager\YamlManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Yaml\Yaml;
 
 class HomeController extends AbstractController
 {
     /**
      * @Route("/home", name="home")
+     *
+     * @param YamlManager $yamlManager
+     * @param OrganizationManager $organizationManager
+     * @return Response
      */
-    public function index(OrganizationManager $organizationManager)
+    public function index(YamlManager $yamlManager, OrganizationManager $organizationManager): Response
     {
-        $organizations = Yaml::parseFile('data/organizations.yaml');
-
-        $organizationsData = [];
-        foreach ($organizations['organizations'] as $organization) {
-            $organizationsData[] = $organizationManager->getProperties($organization);
-        }
+        $organizations = $yamlManager->getPartialYamlData($organizationManager);
 
         return $this->render('home/home.html.twig', [
-            'organizations' => $organizationsData,
+            'organizations' => $organizations,
         ]);
     }
 }
