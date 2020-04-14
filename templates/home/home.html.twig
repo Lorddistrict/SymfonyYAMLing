@@ -27,7 +27,10 @@
                         <td>{{ organization.name }}</td>
                         <td>{{ organization.description | slice(0, 200) }}</td>
                         <td>
-                            <a href="">
+                            <a href="#"
+                               class="delete-item"
+                               data-url="{{ url('home_delete', { id: organization.id } ) }}"
+                            >
                                 <span data-feather="trash-2"></span>
                             </a>
                         </td>
@@ -36,4 +39,23 @@
             </tbody>
         </table>
     </main>
+
+    <script type="application/javascript">
+        $(document).ready(function(){
+            $('.delete-item').on('click', function(e) {
+                const row = $(this);
+                const route = $(this).attr('data-url');
+                e.preventDefault();
+                $.ajax({
+                    url: route,
+                    type: 'DELETE',
+                    success: function () {
+                        row.closest('tr').fadeOut();
+                    }
+                });
+
+                return false;
+            });
+        });
+    </script>
 {% endblock %}

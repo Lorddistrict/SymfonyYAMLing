@@ -13,10 +13,22 @@ class YamlManager
      *
      * @return Organization[]
      */
-    public function getFileData(): array
+    public function read(): array
     {
         $organizations = Yaml::parseFile('data/organizations.yaml');
 
         return $organizations;
+    }
+
+    /**
+     * @param array $toWrite
+     */
+    public function write(array $toWrite)
+    {
+        $yaml = Yaml::dump([
+            'organizations' => $toWrite
+        ]);
+
+        file_put_contents('data/organizations.yaml', $yaml);
     }
 }
