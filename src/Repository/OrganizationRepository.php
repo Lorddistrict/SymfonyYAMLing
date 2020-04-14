@@ -3,48 +3,20 @@
 namespace App\Repository;
 
 use App\Entity\Organization;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Manager\OrganizationManager;
 
-/**
- * @method Organization|null find($id, $lockMode = null, $lockVersion = null)
- * @method Organization|null findOneBy(array $criteria, array $orderBy = null)
- * @method Organization[]    findAll()
- * @method Organization[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class OrganizationRepository extends ServiceEntityRepository
+class OrganizationRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @param Organization[] $organizations
+     */
+    public function getOrganizationTextFields(array $organizations, OrganizationManager $organizationManager)
     {
-        parent::__construct($registry, Organization::class);
-    }
+        $organizationsData = [];
+        foreach ($organizations['organizations'] as $organization) {
+            $organizationsData[] = $organizationManager->getProperties($organization);
+        }
 
-    // /**
-    //  * @return Organization[] Returns an array of Organization objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $organizationsData;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Organization
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

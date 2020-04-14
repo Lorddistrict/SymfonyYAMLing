@@ -9,18 +9,14 @@ use Symfony\Component\Yaml\Yaml;
 class YamlManager
 {
     /**
-     * @param OrganizationManager $organizationManager
+     * Read the YAML file
+     *
      * @return Organization[]
      */
-    public function getPartialYamlData(OrganizationManager $organizationManager): array
+    public function getFileData(): array
     {
         $organizations = Yaml::parseFile('data/organizations.yaml');
 
-        $organizationsData = [];
-        foreach ($organizations['organizations'] as $organization) {
-            $organizationsData[] = $organizationManager->getProperties($organization);
-        }
-
-        return $organizationsData;
+        return $organizations;
     }
 }
