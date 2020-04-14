@@ -4,4 +4,10 @@
 
 {% block body %}
 
+    {% for organization in organizations %}
+        {{ organization.name }}<br/>
+        {{ organization.description }}
+        <hr>
+    {% endfor %}
+
 {% endblock %}
