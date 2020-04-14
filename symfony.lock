@@ -157,6 +157,9 @@
     "symfony/service-contracts": {
         "version": "v2.0.1"
     },
+    "symfony/templating": {
+        "version": "v4.4.7"
+    },
     "symfony/var-dumper": {
         "version": "v4.4.7"
     },
