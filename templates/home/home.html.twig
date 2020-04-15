@@ -18,6 +18,7 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
                 </tr>
             </thead>
@@ -26,6 +27,13 @@
                     <tr>
                         <td>{{ organization.name }}</td>
                         <td>{{ organization.description | slice(0, 200) }}</td>
+                        <td>
+                            <a href="{{ url('home_edit', { id: organization.id } ) }}"
+                               class="edit-item"
+                            >
+                                <span data-feather="edit"></span>
+                            </a>
+                        </td>
                         <td>
                             <a href="#"
                                class="delete-item"

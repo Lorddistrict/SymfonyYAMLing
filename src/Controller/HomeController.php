@@ -70,6 +70,50 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/home/edit/{id}", name="home_edit")
+     *
+     * @param Request $request
+     * @param YamlManager $yamlManager
+     * @param OrganizationManager $organizationManager
+     */
+    public function edit(
+        Request $request,
+        OrganizationManager $organizationManager,
+        OrganizationRepository $organizationRepository,
+        YamlManager $yamlManager,
+        SerializerInterface $serializer
+    )
+    {
+        $data = $yamlManager->read();
+        $organizationId = (int) $request->get('id');
+
+        $organization = $organizationManager->getOneById(
+            $organizationRepository,
+            $yamlManager,
+            $organizationId
+        );
+
+        $form = $this->createForm(AddOrganisationType::class, $organization);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $organization = $form->getData();
+            $organizationManager->setOrganization(
+                $organizationRepository,
+                $yamlManager,
+                $organization,
+                $serializer
+            );
+
+            $this->redirectToRoute('home');
+        }
+
+        return $this->render('organization/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/home/delete/{id}", name="home_delete")
      *
      * @param Request $request
@@ -84,8 +128,8 @@ class HomeController extends AbstractController
     )
     {
         $data = $yamlManager->read();
-        $idOrganization = (int) $request->get('id');
-        $organizations = $organizationManager->delete($organizationRepository, $data, $idOrganization);
+        $organizationId = (int) $request->get('id');
+        $organizations = $organizationManager->delete($organizationRepository, $data, $organizationId);
 
         // Write the new file
         $yamlManager->write($organizations);

@@ -58,6 +58,53 @@ class OrganizationManager
 
     /**
      * @param OrganizationRepository $organizationRepository
+     * @param YamlManager            $yamlManager
+     * @param int                    $organizationId
+     * @return Organization|mixed|void
+     */
+    public function getOneById(
+        OrganizationRepository $organizationRepository,
+        YamlManager $yamlManager,
+        int $organizationId
+    )
+    {
+        $organizations = $this->getAll($organizationRepository, $yamlManager);
+        $organization = $organizationRepository->getOneById($organizations, $organizationId);
+
+        return $organization;
+    }
+
+    /**
+     * @param OrganizationRepository $organizationRepository
+     * @param YamlManager            $yamlManager
+     * @param Organization           $organization
+     * @param SerializerInterface    $serializer
+     */
+    public function setOrganization(
+        OrganizationRepository $organizationRepository,
+        YamlManager $yamlManager,
+        Organization $organization,
+        SerializerInterface $serializer
+    )
+    {
+        $organizations = $this->getAll($organizationRepository, $yamlManager);
+        $newOrganizations = $organizationRepository->setOrganization($organizations, $organization);
+
+        $yamlManager->write($serializer->normalize(
+            $newOrganizations,
+            null,
+            [AbstractNormalizer::ATTRIBUTES => [
+                'name',
+                'description',
+                'users'
+            ]]
+        ));
+
+        return;
+    }
+
+    /**
+     * @param OrganizationRepository $organizationRepository
      * @param Organization           $organization
      * @param YamlManager            $yamlManager
      * @param SerializerInterface    $serializer

@@ -39,6 +39,42 @@ class OrganizationRepository
     }
 
     /**
+     * @param array $organizations
+     * @param int   $organizationId
+     * @return mixed|void
+     */
+    public function getOneById(array $organizations, int $organizationId)
+    {
+        /** @var Organization $organization */
+        foreach($organizations as $organization) {
+            if ($organization->getId() === $organizationId) {
+
+                return $organization;
+            }
+        }
+
+        return;
+    }
+
+    /**
+     * @param Organization[] $organizations
+     * @param Organization   $organization
+     * @return Organization[]
+     */
+    public function setOrganization(array $organizations, Organization $organization)
+    {
+        /** @var Organization $orga */
+        foreach($organizations as $orga) {
+            if ($orga->getId() === $organization->getId()) {
+                $orga->setName($organization->getName());
+                $orga->setDescription($organization->getDescription());
+            }
+        }
+
+        return $organizations;
+    }
+
+    /**
      * @param Organization[] $organizations
      * @param Organization   $organization
      */
