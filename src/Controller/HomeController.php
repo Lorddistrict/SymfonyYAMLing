@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class HomeController extends AbstractController
 {
@@ -45,7 +46,8 @@ class HomeController extends AbstractController
         Request $request,
         OrganizationManager $organizationManager,
         OrganizationRepository $organizationRepository,
-        YamlManager $yamlManager
+        YamlManager $yamlManager,
+        SerializerInterface $serializer
     )
     {
         $organization = new Organization();
@@ -54,7 +56,12 @@ class HomeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $organization = $form->getData();
-            $organizationManager->add($organizationRepository, $organization, $yamlManager);
+            $organizationManager->add(
+                $organizationRepository,
+                $organization,
+                $yamlManager,
+                $serializer
+            );
         }
 
         return $this->render('organization/add.html.twig', [

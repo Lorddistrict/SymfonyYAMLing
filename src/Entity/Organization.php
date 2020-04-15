@@ -73,5 +73,11 @@ class Organization
         $this->description = $description;
     }
 
-
+    /**
+     * @return User[]
+     */
+    public function getUsers(): array
+    {
+        return $this->users;
+    }
 }

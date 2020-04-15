@@ -12,17 +12,17 @@ class OrganizationRepository
      */
     public function getAll(array $organizationsFromFile)
     {
-//        /** @var Organization $organization */
-//        foreach ($organizationsFromFile['organizations'] as $key => $organization) {
-//            $organizations[] = new Organization(
-//                $key,
-//                $organization['name'],
-//                $organization['description'],
-//                $organization['users']
-//            );
-//        }
+        /** @var Organization $organization */
+        foreach ($organizationsFromFile['organizations'] as $key => $organization) {
+            $organizations[] = new Organization(
+                $key,
+                $organization['name'],
+                $organization['description'],
+                $organization['users']
+            );
+        }
 
-        return $organizationsFromFile;
+        return $organizations;
     }
 
     /**

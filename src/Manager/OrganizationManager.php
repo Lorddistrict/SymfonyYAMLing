@@ -5,6 +5,8 @@ namespace App\Manager;
 
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class OrganizationManager
 {
@@ -55,13 +57,17 @@ class OrganizationManager
     }
 
     /**
-     * @param array                  $data
      * @param OrganizationRepository $organizationRepository
+     * @param Organization           $organization
+     * @param YamlManager            $yamlManager
+     * @param SerializerInterface    $serializer
+     * @return Organization[]
      */
     public function add(
         OrganizationRepository $organizationRepository,
         Organization $organization,
-        YamlManager $yamlManager
+        YamlManager $yamlManager,
+        SerializerInterface $serializer
     )
     {
         $currentOrganizations = $this->getAll($organizationRepository, $yamlManager);
@@ -69,9 +75,15 @@ class OrganizationManager
         $organization->setId($length);
         $organizations = $organizationRepository->add($currentOrganizations, $organization);
 
-        dd($organizations);
-
-        $yamlManager->write($organizations);
+        $yamlManager->write($serializer->normalize(
+            $organizations,
+            null,
+            [AbstractNormalizer::ATTRIBUTES => [
+                'name',
+                'description',
+                'users'
+            ]]
+        ));
 
         return $organizations;
     }
@@ -80,6 +92,7 @@ class OrganizationManager
      * @param OrganizationRepository $organizationRepository
      * @param array                  $data
      * @param int                    $id
+     * @return array
      */
     public function delete(OrganizationRepository $organizationRepository, array $data, int $id)
     {
