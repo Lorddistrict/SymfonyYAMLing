@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Organization;
+use App\Form\AddOrganisationType;
 use App\Manager\OrganizationManager;
 use App\Manager\YamlManager;
 use App\Repository\OrganizationRepository;
@@ -27,10 +29,36 @@ class HomeController extends AbstractController
     ): Response
     {
         $data = $yamlManager->read();
-        $organizations = $organizationRepository->getOrganizationTextFields($data, $organizationManager);
+        $organizations = $organizationRepository->getAllTextFields($data, $organizationManager);
 
         return $this->render('home/home.html.twig', [
             'organizations' => $organizations,
+        ]);
+    }
+
+    /**
+     * @Route("/home/add", name="home_add")
+     *
+     * @param Request $request
+     */
+    public function add(
+        Request $request,
+        OrganizationManager $organizationManager,
+        OrganizationRepository $organizationRepository,
+        YamlManager $yamlManager
+    )
+    {
+        $organization = new Organization();
+        $form = $this->createForm(AddOrganisationType::class, $organization);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $organization = $form->getData();
+            $organizationManager->add($organizationRepository, $organization, $yamlManager);
+        }
+
+        return $this->render('organization/add.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -39,7 +67,7 @@ class HomeController extends AbstractController
      *
      * @param Request $request
      * @param YamlManager $yamlManager
-     * @param OrganizationRepository $organizationRepository
+     * @param OrganizationManager $organizationManager
      */
     public function delete(
         Request $request,
@@ -49,14 +77,14 @@ class HomeController extends AbstractController
     )
     {
         $data = $yamlManager->read();
-        $idOrganization = $request->get('id');
-        $organizations = $organizationRepository->deleteOrganization($data, (int) $idOrganization);
+        $idOrganization = (int) $request->get('id');
+        $organizations = $organizationManager->delete($organizationRepository, $data, $idOrganization);
 
         // Write the new file
         $yamlManager->write($organizations);
 
         // Need to regenerate ids
-        $organizations = $organizationRepository->getOrganizationTextFields($data, $organizationManager);
+        $organizations = $organizationManager->getAll($organizationRepository, $yamlManager);
 
         return $this->render('home/home.html.twig', [
             'organizations' => $organizations,

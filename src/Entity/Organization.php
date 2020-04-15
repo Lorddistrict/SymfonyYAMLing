@@ -17,7 +17,7 @@ class Organization
      * @param string $description
      * @param array $users
      */
-    public function __construct(int $id, string $name, string $description, array $users = [])
+    public function __construct(int $id = null, string $name = null, string $description = null, array $users = [])
     {
         $this->id = $id;
         $this->name = $name;
@@ -26,7 +26,7 @@ class Organization
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getId(): int
     {
@@ -34,19 +34,43 @@ class Organization
     }
 
     /**
-     * @return string
+     * @param int $id
      */
-    public function getName(): string
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @return string
+     * @param string $name
      */
-    public function getDescription(): string
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
 

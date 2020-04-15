@@ -8,9 +8,27 @@ use App\Manager\OrganizationManager;
 class OrganizationRepository
 {
     /**
+     * @param array $organizationsFromFile
+     */
+    public function getAll(array $organizationsFromFile)
+    {
+//        /** @var Organization $organization */
+//        foreach ($organizationsFromFile['organizations'] as $key => $organization) {
+//            $organizations[] = new Organization(
+//                $key,
+//                $organization['name'],
+//                $organization['description'],
+//                $organization['users']
+//            );
+//        }
+
+        return $organizationsFromFile;
+    }
+
+    /**
      * @param Organization[] $organizations
      */
-    public function getOrganizationTextFields(array $organizations, OrganizationManager $organizationManager)
+    public function getAllTextFields(array $organizations, OrganizationManager $organizationManager)
     {
         $organizationsData = [];
         foreach ($organizations['organizations'] as $key => $organization) {
@@ -22,9 +40,20 @@ class OrganizationRepository
 
     /**
      * @param Organization[] $organizations
+     * @param Organization   $organization
+     */
+    public function add(array $organizations, Organization $organization)
+    {
+        array_push($organizations, $organization);
+
+        return $organizations;
+    }
+
+    /**
+     * @param Organization[] $organizations
      * @param int            $idOrganization
      */
-    public function deleteOrganization(
+    public function delete(
         array $organizations,
         int $idOrganization
     )
