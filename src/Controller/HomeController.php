@@ -105,7 +105,7 @@ class HomeController extends AbstractController
                 $serializer
             );
 
-            $this->redirectToRoute('home');
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('organization/edit.html.twig', [
